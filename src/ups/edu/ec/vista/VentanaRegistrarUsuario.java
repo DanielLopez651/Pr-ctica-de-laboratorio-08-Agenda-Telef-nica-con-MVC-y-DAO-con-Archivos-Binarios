@@ -178,7 +178,7 @@ public class VentanaRegistrarUsuario extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Contraseña incorrecta! No puede contener más de 8 caracteres");
         } else {
 //            controladorUsuario.crearUsuario(nombre, apellido, cedula, correo, password);
-                controladorUsuario.registrar(cedula, nombre, apellido, correo, correo);
+                controladorUsuario.registrar(cedula, nombre, apellido, correo, password);
             JOptionPane.showMessageDialog(this, "Usuario creado con exito");
             limpiar();
             this.setVisible(false);

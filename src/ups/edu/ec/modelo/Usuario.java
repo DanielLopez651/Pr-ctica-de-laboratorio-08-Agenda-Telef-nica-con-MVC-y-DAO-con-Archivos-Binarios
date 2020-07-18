@@ -27,12 +27,12 @@ public class Usuario {
     }
 
     public Usuario(String cedula, String nombre, String apellido, String correo, String contraseña) {
-        this.cedula = cedula;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.correo = correo;
-        this.contraseña = contraseña;
-        telefonos = new ArrayList<>();
+        this.setCedula(cedula);
+        this.setNombre(nombre);
+        this.setApellido(apellido);
+        this.setCorreo(correo);
+        this.setContraseña(contraseña);
+
     }
 
     public List<Telefono> getTelefonos() {
@@ -44,7 +44,8 @@ public class Usuario {
     }
 
     public void setCedula(String cedula) {
-        this.cedula = cedula;
+        this.cedula=validarEspacios(cedula,10);
+       
     }
 
     public String getNombre() {
@@ -52,7 +53,7 @@ public class Usuario {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = validarEspacios(nombre,25);
     }
 
     public String getApellido() {
@@ -60,7 +61,7 @@ public class Usuario {
     }
 
     public void setApellido(String apellido) {
-        this.apellido = apellido;
+        this.apellido = validarEspacios(apellido,25);
     }
 
     public String getCorreo() {
@@ -68,7 +69,7 @@ public class Usuario {
     }
 
     public void setCorreo(String correo) {
-        this.correo = correo;
+        this.correo = validarEspacios(correo,50);
     }
 
     public String getContraseña() {
@@ -76,9 +77,25 @@ public class Usuario {
     }
 
     public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+        this.contraseña = validarEspacios(contraseña,8);
     }
-
+    public String validarEspacios(String cadena, int lon){
+        if(cadena.length()==lon){
+            return cadena;
+        }else{
+            if(cadena.length()<10){
+                return llenarEspacios(cadena,lon);
+            }else{
+                return cortarEspacios(cadena,lon);
+            }
+        }
+    }
+    public String llenarEspacios(String cadena, int lon){
+        return String.format("%-"+lon+"s", cadena);
+    }
+    public String cortarEspacios(String cadena, int lon){
+        return cadena.substring(0,lon);
+    }
     @Override
     public int hashCode() {
         int hash = 7;

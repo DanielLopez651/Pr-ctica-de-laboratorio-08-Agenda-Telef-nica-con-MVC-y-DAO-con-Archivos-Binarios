@@ -112,13 +112,9 @@ public class ControladorUsuario {
     
    
     public boolean validarUsuario(String correo,String contraseña){
-       usuario=usuarioDAO.login(correo,contraseña) ;
-       if(usuario!=null){
-           return true;
-       }else{
-           return false;
-       }
-    }
+       
+       return usuarioDAO.login(correo,contraseña);
      
      
+    }   
 }

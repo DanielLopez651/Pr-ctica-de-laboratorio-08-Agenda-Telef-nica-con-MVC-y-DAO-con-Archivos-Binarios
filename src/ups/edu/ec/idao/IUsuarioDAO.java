@@ -19,6 +19,6 @@ public interface IUsuarioDAO {
     public Usuario read(String cedula);
     public void update(Usuario usuario);
     public void delete(Usuario usuario);   
-    public List<Usuario> findAll();
-    public Usuario login (String correo, String contraseña);
+
+    public boolean login (String correo, String contraseña);
 }

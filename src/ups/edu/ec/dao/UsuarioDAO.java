@@ -7,9 +7,9 @@ package ups.edu.ec.dao;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
-import java.util.Iterator;
+
 import java.util.List;
+
 import ups.edu.ec.idao.IUsuarioDAO;
 import ups.edu.ec.modelo.Usuario;
 
@@ -18,73 +18,136 @@ import ups.edu.ec.modelo.Usuario;
  * @author user
  */
 public class UsuarioDAO implements IUsuarioDAO {
-//    private String cedula;      | 10 bytes +2
-//    private String nombre;      | 25 bytes +2
-//    private String apellido;    | 25 bytes +2
-//    private String correo;      | 50 bytes +2
-//    private String contraseña;  |  8 bytes +2
-//                                = 118 +10=128bytes            
 
-    private List<Usuario> listaUsuario;
+    /**
+     * private String cedula; 10 private String nombre; 25 private String
+     * apellido; 25 private String correo; 50 private String contraseña; 8 118
+     * bytes+10
+     *
+     *
+     *
+     */
+    private RandomAccessFile archivo;
 
     public UsuarioDAO() {
-        listaUsuario = new ArrayList<>();
+
+        try {
+            archivo = new RandomAccessFile("datos/usuario.dat", "rw");
+        } catch (IOException ex) {
+            System.out.println("error de lectura y escritura");
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public void create(Usuario usuario) {
-        listaUsuario.add(usuario);
+        try {
+            archivo.seek(archivo.length());
+            archivo.writeUTF(usuario.getCedula());
+            archivo.writeUTF(usuario.getNombre());
+            archivo.writeUTF(usuario.getApellido());
+            archivo.writeUTF(usuario.getCorreo());
+            archivo.writeUTF(usuario.getContraseña());
+        } catch (IOException ex) {
+            System.out.println("error en el create UsuarioDAO");
+        }
     }
 
     @Override
     public Usuario read(String cedula) {
-        for (Usuario usuario : listaUsuario) {
-            if (usuario.getCedula().equals(cedula)) {
-                return usuario;
+        int salto = 0;
+        int registro = 128;
+        try {
+            while (salto < archivo.length()) {
+                archivo.seek(salto);
+                String cedulaArchivo = archivo.readUTF().trim();
+                if (cedula.trim().equals(cedulaArchivo)) {
+                    Usuario u = new Usuario(cedula, archivo.readUTF().trim(),
+                            archivo.readUTF().trim(), archivo.readUTF().trim(),
+                            archivo.readUTF().trim());
+                    return u;
+                }
+                salto += registro;
             }
-
+        } catch (IOException ex) {
+            System.out.println("Error de lectura o escritura(readUsuario)");
         }
         return null;
     }
 
     @Override
     public void update(Usuario usuario) {
-        for (int i = 0; i < listaUsuario.size(); i++) {
-            Usuario u = listaUsuario.get(i);
-            if (u.getCedula().equals(usuario.getCedula())) {
-                listaUsuario.set(i, usuario);
-                break;
+        int salto = 0;
+        int registro = 128;
+        String cedula = usuario.getCedula();
+        try {
+            while (salto < archivo.length()) {
+                archivo.seek(salto);
+                String cedulaArchivo = archivo.readUTF().trim();
+                if (cedula.trim().equals(cedulaArchivo)) {
+
+                    archivo.writeUTF(usuario.getNombre());
+                    archivo.writeUTF(usuario.getApellido());
+                    archivo.writeUTF(usuario.getCorreo());
+                    archivo.writeUTF(usuario.getContraseña());
+                    break;
+                }
+                salto += registro;
             }
+        } catch (IOException ex) {
+            System.out.println("Error de lectura o escritura(upDateUsuario)");
         }
     }
 
     @Override
     public void delete(Usuario usuario) {
-        Iterator<Usuario> it = listaUsuario.iterator();
-        while (it.hasNext()) {
-            Usuario u = it.next();
-            if (u.getCedula().equals(usuario.getCedula())) {
-                it.remove();
-                break;
+        int registro = 128;
+        try {
+            String cedula = usuario.getCedula();
+            int salto = 0;
+            while (salto < archivo.length()) {
+                archivo.seek(salto);
+                String cedulaArchivo = archivo.readUTF();
+                if (cedula.trim().equals(cedulaArchivo.trim())) {
+                    archivo.writeUTF(llenarEspacios(10));
+                    archivo.writeUTF(llenarEspacios(25));
+                    archivo.writeUTF(llenarEspacios(25));
+                    archivo.writeUTF(llenarEspacios(50));
+                    archivo.writeUTF(llenarEspacios(8));
+                    break;
+                }
+                salto += registro;
             }
-        }
 
+        } catch (IOException ex) {
+            System.out.println("Error delete usuario");
+        }
+    }
+
+    public String llenarEspacios(int espacios) {
+        String aux = "";
+        return String.format("%-" + espacios + "s", aux);
     }
 
     @Override
-    public List<Usuario> findAll() {
-        return listaUsuario;
-    }
-
-    @Override
-    public Usuario login(String correo, String contraseña) {
-        for (Usuario usuario : findAll()) {
-            if (usuario.getCorreo().equals(correo) && usuario.getContraseña().equals(contraseña)) {
-
-                return usuario;
+    public boolean login(String correo, String contraseña) {
+        try {
+            int salto = 66;
+            int registro = 128;
+            while (salto < archivo.length()) {
+                archivo.seek(salto);
+                String correoArchivo = archivo.readUTF();
+                String contraseñaArchivo = archivo.readUTF();
+                if (correo.equals(correoArchivo.trim()) && contraseña.equals(contraseñaArchivo.trim())) {
+                    return true;
+                }
+                salto += registro;
             }
-        }
-        return null;
-    }
 
+        } catch (IOException ex) {
+            System.out.println("error login");
+        }
+        return false;
+
+    }
 }

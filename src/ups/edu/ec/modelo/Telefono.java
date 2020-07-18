@@ -14,7 +14,7 @@ public class Telefono {
     private String numero;
     private String tipo;
     private String operadora;
-
+    private Usuario usuario;
     public Telefono() {
     }
 
@@ -56,6 +56,15 @@ public class Telefono {
     public void setOperadora(String operadora) {
         this.operadora = operadora;
     }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
 
     @Override
     public int hashCode() {
