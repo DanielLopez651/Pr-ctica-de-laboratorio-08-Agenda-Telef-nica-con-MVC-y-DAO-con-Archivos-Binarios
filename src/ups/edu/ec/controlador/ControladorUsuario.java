@@ -48,13 +48,12 @@ public class ControladorUsuario {
     }
 
     public void actualizarUsuario(String nombre, String apellido, String cedula, String correo,
-            String password) {
+            String contraseña) {
         usuario.setNombre(nombre);
         usuario.setApellido(apellido);
         usuario.setCorreo(correo);
-        usuario.setContraseña(password);
+        usuario.setContraseña(contraseña);
         usuario.setCedula(cedula);
-
         usuarioDAO.update(usuario);
 
     }
@@ -111,19 +110,14 @@ public class ControladorUsuario {
         return usuario;
     }
 
-    public List<Telefono> listarTelefonosUsuario() {
-        String id = usuario.getCedula().trim();
+    public Usuario buscarCorreo(String correo) {
+        usuario = usuarioDAO.LeerCorreo(correo);
+        if (usuario == null) {
+            return null;
+        } else {
+            return usuario;
+        }
 
-        return telefonoDAO.telefonosUsuario(id);
-    }
-
-    public List<Telefono> listarTelefonosTodos(String id) {
-
-        return telefonoDAO.telefonosUsuario(id);
-    }
-
-    public List<Telefono> listarTodos() {
-        return telefonoDAO.findAll();
     }
 
     public int codigoTelefono() {
@@ -131,14 +125,19 @@ public class ControladorUsuario {
         return (++conta);
     }
 
-    public Usuario buscarCorreo(String correo) {
-        usuario = usuarioDAO.readCorreo(correo);
-        if (usuario == null) {
-            return null;
-        } else {
-            return usuario;
-        }
+    public List<Telefono> listarTelefonosUsuario() {
+        String cedula = usuario.getCedula().trim();
 
+        return telefonoDAO.telefonosUsuario(cedula);
+    }
+
+    public List<Telefono> listarTelefonosTodos(String cedula) {
+
+        return telefonoDAO.telefonosUsuario(cedula);
+    }
+
+    public List<Telefono> listarTodos() {
+        return telefonoDAO.findAll();
     }
 
 }

@@ -11,7 +11,7 @@ import ups.edu.ec.modelo.Usuario;
 
 /**
  *
- * @author Adolfo
+ * @author user
  */
 public class VentanaGestionUsuario extends javax.swing.JInternalFrame {
 

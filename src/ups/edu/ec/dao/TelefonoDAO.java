@@ -49,7 +49,6 @@ public class TelefonoDAO implements ITelefonoDAO {
 //    public List<Telefono> getListaTelefono() {
 //        return listaTelefono;
 //    }
-
     @Override
     public void create(Telefono telefono) {
         try {
@@ -76,7 +75,7 @@ public class TelefonoDAO implements ITelefonoDAO {
                     //retornar telefono
                     Telefono tel = new Telefono(codigo, archivo.readUTF().trim(),
                             archivo.readUTF().trim(), archivo.readUTF().trim());
-                       Usuario user = controladorUsuario.buscar(archivo.readUTF());
+                    Usuario user = controladorUsuario.buscar(archivo.readUTF());
                     tel.setUsuario(user);
                     return tel;
                 }
@@ -112,7 +111,7 @@ public class TelefonoDAO implements ITelefonoDAO {
     }
 
     @Override
-       public void delete(int id) {
+    public void delete(int id) {
 
         int salto = 0;
 
@@ -136,7 +135,6 @@ public class TelefonoDAO implements ITelefonoDAO {
         }
 
     }
-
 
     public String llenarEspacios(int espacios) {
         String formato = "";
@@ -173,6 +171,7 @@ public class TelefonoDAO implements ITelefonoDAO {
         try {
             if (archivo.length() > tamañoRegistro) {
                 archivo.seek(archivo.length() - tamañoRegistro);
+//                     System.out.println("si llego aqui");
                 codigo = archivo.readInt();
             }
         } catch (IOException ex) {
@@ -181,18 +180,19 @@ public class TelefonoDAO implements ITelefonoDAO {
         }
         return codigo;
     }
+
     @Override
     public List<Telefono> telefonosUsuario(String id) {
-         List<Telefono> teles = new ArrayList<>();
+        List<Telefono> teles = new ArrayList<>();
 
         try {
             int salto = 85;
             while (salto < archivo.length()) {
                 archivo.seek(salto);
-                String aux = archivo.readUTF().trim();
-                System.out.println(aux);
-                if (aux.equals(id.trim())) {
-                    //System.out.println("hola");
+
+                String auxCedula = archivo.readUTF().trim();
+//                System.out.println("si llego aqui");
+                if (auxCedula.equals(id.trim())) {
 
                     archivo.seek(salto - 85);
                     int valor = archivo.readInt();
@@ -212,6 +212,7 @@ public class TelefonoDAO implements ITelefonoDAO {
 
         return teles;
     }
+
     @Override
     public int codigoTelefono() {
 

@@ -357,15 +357,15 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
 //        cbxOperadora.setSelectedItem(operadora);
 //        }
         int fila = tblTelefonos.getSelectedRow();
-        int cod = (int) tblTelefonos.getValueAt(fila, 0);
-        String num = (String) tblTelefonos.getValueAt(fila, 1);
+        int codigo= (int) tblTelefonos.getValueAt(fila, 0);
+        String numero = (String) tblTelefonos.getValueAt(fila, 1);
         String tipo = (String) tblTelefonos.getValueAt(fila, 2);
-        String opera = (String) tblTelefonos.getValueAt(fila, 3);
+        String operadora = (String) tblTelefonos.getValueAt(fila, 3);
 
-        txtCodigo.setText(String.valueOf(cod));
-        txtNumero.setValue(num);
+        txtCodigo.setText(String.valueOf(codigo));
+        txtNumero.setValue(numero);
         cbxTipo.setSelectedItem(tipo);
-        cbxOperadora.setSelectedItem(opera);
+        cbxOperadora.setSelectedItem(operadora);
 
         activarEdicion();
 
@@ -376,14 +376,14 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
         String numero = txtNumero.getText();
         String operadora = cbxOperadora.getSelectedItem().toString();
         String tipo = cbxTipo.getSelectedItem().toString();
-        int cod = Integer.parseInt(txtCodigo.getText());
+        int codigo = Integer.parseInt(txtCodigo.getText());
 
         if (numero.isEmpty()
                 || tipo.equals(cbxTipo.getItemAt(0)) || operadora.equals(cbxOperadora.getItemAt(0))) {
             JOptionPane.showMessageDialog(this, "Llene todo");
         } else {
-            controladorUsuario.actualizarTelefono(cod, numero, tipo, operadora);
-            JOptionPane.showMessageDialog(this, "Teléfono actualizado o");
+            controladorUsuario.actualizarTelefono(codigo, numero, tipo, operadora);
+            JOptionPane.showMessageDialog(this, "Teléfono actualizado ");
             cargarTelefonosTblTelefonos();
             btnAgregar.setEnabled(true);
             btnCancelar.setEnabled(false);
@@ -400,8 +400,8 @@ public class VentanaGestionTelefono extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        int r = JOptionPane.showConfirmDialog(this, "Desea eliminarlo");
-        if (r == 0) {
+        int op = JOptionPane.showConfirmDialog(this, "Desea eliminarlo");
+        if (op == 0) {
             controladorUsuario.eliminarTelefono(Integer.parseInt(txtCodigo.getText()));
             cargarTelefonosTblTelefonos();
             limpiar();

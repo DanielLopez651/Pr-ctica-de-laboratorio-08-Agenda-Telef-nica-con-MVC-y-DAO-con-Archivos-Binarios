@@ -231,7 +231,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ventanaGestionTelefono.setVisible(false);
         ventanaIniciarSesion.setVisible(false);
 //        ventanaListar.setVisible(false);
-        ventanaRegistrarUsuario.setVisible(false);
+        ventanaRegistrarUsuario.setVisible(true);
 //        ventanaGestionUsuario.setVisible(false);
 
     }

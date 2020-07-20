@@ -5,7 +5,6 @@
  */
 package ups.edu.ec.idao;
 
-import java.util.Collection;
 import java.util.List;
 import ups.edu.ec.modelo.Usuario;
 
@@ -24,7 +23,7 @@ public interface IUsuarioDAO {
 
     public void delete(Usuario usuario);
 
-    public Usuario readCorreo(String correo);
+    public Usuario LeerCorreo(String correo);
 
     public Usuario login(String correo, String contraseña);
 }
