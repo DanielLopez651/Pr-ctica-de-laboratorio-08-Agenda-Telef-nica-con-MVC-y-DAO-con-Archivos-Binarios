@@ -5,9 +5,7 @@
  */
 package ups.edu.ec.controlador;
 
-
 import java.util.List;
-
 import ups.edu.ec.dao.TelefonoDAO;
 import ups.edu.ec.dao.UsuarioDAO;
 import ups.edu.ec.idao.ITelefonoDAO;
@@ -40,26 +38,15 @@ public class ControladorUsuario {
         this.telefonoDAO = telefonoDAO;
     }
 
-    public void registrar(String cedula,String nombre,String apellido,String correo, String contraseña) {
-        usuario= new Usuario(cedula, nombre, apellido, correo, contraseña);
+    public void registrar(String cedula, String nombre, String apellido, String correo, String contraseña) {
+        usuario = new Usuario(cedula, nombre, apellido, correo, contraseña);
         usuarioDAO.create(usuario);
     }
-     public Usuario devolverUsuario() {
+
+    public Usuario verificarUsuario() {
         return usuario;
     }
 
-    public void verUsuario(String cedula) {
-
-    }
-
-    public void actualizar(String cedula) {
-
-    }
-
-    //Genera un Usuario con la clave ingresada atraves de la vista y lo elimina atraves del DAO
-    public void eliminar(String cedula) {
-
-    }
     public void actualizarUsuario(String nombre, String apellido, String cedula, String correo,
             String password) {
         usuario.setNombre(nombre);
@@ -72,49 +59,86 @@ public class ControladorUsuario {
 
     }
 
- 
+    public void eliminar(String cedula) {
+        usuarioDAO.delete(usuario);
+    }
+
     public Usuario buscarUsuariosPorCedula(String cedula) {
-        usuario=usuarioDAO.read(cedula);
-        
+        usuario = usuarioDAO.read(cedula);
+
         return usuario;
     }
 
-    public void agregarTelefono(int codigo, String numero, String tipo, String operadora){
-        telefono = new Telefono(codigo, numero, tipo, operadora);
-        telefonoDAO.create(telefono);
-        usuario.agregarTelefono(telefono);
-        usuarioDAO.update(usuario);
-    }
-
-    public void eliminarTelefono(int codigo) {
-        telefono = telefonoDAO.read(codigo);
-        if(telefono != null){
-            telefonoDAO.delete(telefono);
-            usuario.eliminarTelefono(telefono);
-            usuarioDAO.update(usuario);
-            telefono= null;
+    public boolean validarUsuario(String correo, String contraseña) {
+        usuario = usuarioDAO.login(correo, contraseña);
+        if (usuario != null) {
+            return true;
+        } else {
+            return false;
         }
     }
 
+    public void agregarTelefono(int codigo, String numero, String tipo, String operadora) {
+        telefono = new Telefono(codigo, numero, tipo, operadora);
+        telefono.setUsuario(usuario);
+        telefonoDAO.create(telefono);
+    }
+
     public void actualizarTelefono(int codigo, String numero, String tipo, String operadora) {
-          telefono = new Telefono(codigo, numero, tipo, operadora);
+        telefono = new Telefono(codigo, numero, tipo, operadora);
         telefonoDAO.update(telefono);
-        usuario.actualizarTelefono(telefono);
-        usuarioDAO.update(usuario);
+    }
+
+    public void eliminarTelefono(int codigo) {
+        telefonoDAO.delete(codigo);
+    }
+
+//    public List<Telefono> listarTelefonos() {
+//
+//        return null;
+//    }
+    public void imprimirTelefonos() {
+        List<Telefono> telefonos;
+        telefonos = telefonoDAO.findAll();
+
+        for (Telefono tele : telefonos) {
+            System.out.println(tele.toString());
+        }
+    }
+
+    public Usuario buscar(String cedula) {
+        usuario = usuarioDAO.read(cedula);
+        return usuario;
+    }
+
+    public List<Telefono> listarTelefonosUsuario() {
+        String id = usuario.getCedula().trim();
+
+        return telefonoDAO.telefonosUsuario(id);
+    }
+
+    public List<Telefono> listarTelefonosTodos(String id) {
+
+        return telefonoDAO.telefonosUsuario(id);
+    }
+
+    public List<Telefono> listarTodos() {
+        return telefonoDAO.findAll();
+    }
+
+    public int codigoTelefono() {
+        int conta = telefonoDAO.codigoTelefono();
+        return (++conta);
+    }
+
+    public Usuario buscarCorreo(String correo) {
+        usuario = usuarioDAO.readCorreo(correo);
+        if (usuario == null) {
+            return null;
+        } else {
+            return usuario;
+        }
 
     }
 
-   
-
-    public List<Telefono> listarTelefonos() {
-        return usuario.getTelefonos();
-    }
-    
-   
-    public boolean validarUsuario(String correo,String contraseña){
-       
-       return usuarioDAO.login(correo,contraseña);
-     
-     
-    }   
 }

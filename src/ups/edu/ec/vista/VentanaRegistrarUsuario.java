@@ -15,15 +15,13 @@ import ups.edu.ec.dao.UsuarioDAO;
  * @author user
  */
 public class VentanaRegistrarUsuario extends javax.swing.JInternalFrame {
-    private ControladorUsuario controladorUsuario;
-    
-   
-    public VentanaRegistrarUsuario(ControladorUsuario controladorUsuario ) {
-        initComponents();
-        this.controladorUsuario=controladorUsuario;
-    }
 
-   
+    private ControladorUsuario controladorUsuario;
+
+    public VentanaRegistrarUsuario(ControladorUsuario controladorUsuario) {
+        initComponents();
+        this.controladorUsuario = controladorUsuario;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -157,36 +155,31 @@ public class VentanaRegistrarUsuario extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-         this.setVisible(false);
+        this.setVisible(false);
         limpiar();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnGuardarDatosUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarDatosUsuarioActionPerformed
-       String nombre = txtNombre.getText();
+        String nombre = txtNombre.getText();
         String apellido = txtApellido.getText();
         String cedula = txtCedula.getText();
         String correo = txtCorreo.getText();
-        String password = txtPassword.getText();
+        String contraseña = txtPassword.getText();
 
         if (nombre.isEmpty() || apellido.isEmpty() || cedula.isEmpty() || correo.isEmpty()
-                || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "¡Llene todos los campos solicitados!");
-
-        } else if (cedula.length() > 10) {
-            JOptionPane.showMessageDialog(this, "Cédula incorrecta! Mayor a 10 caracteres");
-        } else if (password.length() > 8) {
-            JOptionPane.showMessageDialog(this, "Contraseña incorrecta! No puede contener más de 8 caracteres");
+                || contraseña.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "¡LLemar todo!");
         } else {
-//            controladorUsuario.crearUsuario(nombre, apellido, cedula, correo, password);
-                controladorUsuario.registrar(cedula, nombre, apellido, correo, password);
-            JOptionPane.showMessageDialog(this, "Usuario creado con exito");
+
+            controladorUsuario.registrar(cedula, nombre, apellido, correo, contraseña);
+            JOptionPane.showMessageDialog(this, "Usuario creado ");
             limpiar();
             this.setVisible(false);
         }
 
-//        controladorUsuario.imprimirUsuarios();
+
     }//GEN-LAST:event_btnGuardarDatosUsuarioActionPerformed
-    public void limpiar(){
+    public void limpiar() {
         txtCedula.setText("");
         txtNombre.setText("");
         txtApellido.setText("");

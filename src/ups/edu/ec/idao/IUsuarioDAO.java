@@ -14,11 +14,17 @@ import ups.edu.ec.modelo.Usuario;
  * @author user
  */
 public interface IUsuarioDAO {
+
     //Metodos CRUD
     public void create(Usuario usuario);
-    public Usuario read(String cedula);
-    public void update(Usuario usuario);
-    public void delete(Usuario usuario);   
 
-    public boolean login (String correo, String contraseña);
+    public Usuario read(String cedula);
+
+    public void update(Usuario usuario);
+
+    public void delete(Usuario usuario);
+
+    public Usuario readCorreo(String correo);
+
+    public Usuario login(String correo, String contraseña);
 }

@@ -22,7 +22,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private VentanaRegistrarUsuario ventanaRegistrarUsuario;
     private VentanaGestionTelefono ventanaGestionTelefono;
     private VentanaGestionUsuario ventanaGestionUsuario;
-    
+     private VentanaBuscarUsuarios ventanaListar;
     private TelefonoDAO telefonoDAO;
     private UsuarioDAO usuarioDAO;    
     private ControladorTelefono controladorTelefono;
@@ -44,9 +44,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ventanaRegistrarUsuario = new VentanaRegistrarUsuario(controladorUsuario);
         ventanaGestionTelefono = new VentanaGestionTelefono(controladorUsuario, controladorTelefono);
         ventanaGestionUsuario = new VentanaGestionUsuario(controladorUsuario);
-        
+       ventanaListar = new VentanaBuscarUsuarios(controladorUsuario);
         desktopPane.add(ventanaRegistrarUsuario);
-        
+         desktopPane.add(ventanaListar);
     }
     
     public JMenuItem getInicarMenuItem() {
@@ -78,6 +78,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         menuIniciarS = new javax.swing.JMenu();
         InicarMenuItem = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         menuRegistar = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         menuItemCerrarSesion = new javax.swing.JMenuItem();
@@ -110,6 +111,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         menuIniciarS.add(InicarMenuItem);
+
+        jMenuItem1.setText("Buscar Usuario");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        menuIniciarS.add(jMenuItem1);
 
         menuRegistar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         menuRegistar.setMnemonic('s');
@@ -214,6 +223,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         desktopPane.add(ventanaGestionUsuario);
         ventanaGestionUsuario.setVisible(true);
     }//GEN-LAST:event_menuItemGestionUsuarioActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        ventanaListar.setVisible(true);       
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
     public void cerrarVentanas() {
         ventanaGestionTelefono.setVisible(false);
         ventanaIniciarSesion.setVisible(false);
@@ -264,6 +277,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuIniciarS;
     private javax.swing.JMenuItem menuItemCerrarSesion;

@@ -8,7 +8,7 @@ package ups.edu.ec.dao;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import java.util.List;
+
 
 import ups.edu.ec.idao.IUsuarioDAO;
 import ups.edu.ec.modelo.Usuario;
@@ -28,11 +28,13 @@ public class UsuarioDAO implements IUsuarioDAO {
      *
      */
     private RandomAccessFile archivo;
-
+    private int tamañoRegistro;
+    private Usuario usuario;
     public UsuarioDAO() {
-
+        tamañoRegistro=128;
         try {
             archivo = new RandomAccessFile("datos/usuario.dat", "rw");
+            tamañoRegistro=128;
         } catch (IOException ex) {
             System.out.println("error de lectura y escritura");
             ex.printStackTrace();
@@ -56,7 +58,7 @@ public class UsuarioDAO implements IUsuarioDAO {
     @Override
     public Usuario read(String cedula) {
         int salto = 0;
-        int registro = 128;
+      
         try {
             while (salto < archivo.length()) {
                 archivo.seek(salto);
@@ -67,7 +69,7 @@ public class UsuarioDAO implements IUsuarioDAO {
                             archivo.readUTF().trim());
                     return u;
                 }
-                salto += registro;
+                salto += tamañoRegistro;
             }
         } catch (IOException ex) {
             System.out.println("Error de lectura o escritura(readUsuario)");
@@ -101,7 +103,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 
     @Override
     public void delete(Usuario usuario) {
-        int registro = 128;
+         
         try {
             String cedula = usuario.getCedula();
             int salto = 0;
@@ -116,7 +118,7 @@ public class UsuarioDAO implements IUsuarioDAO {
                     archivo.writeUTF(llenarEspacios(8));
                     break;
                 }
-                salto += registro;
+                salto += tamañoRegistro;
             }
 
         } catch (IOException ex) {
@@ -130,24 +132,59 @@ public class UsuarioDAO implements IUsuarioDAO {
     }
 
     @Override
-    public boolean login(String correo, String contraseña) {
-        try {
+    public Usuario login(String correo, String contraseña) {
+            try {
             int salto = 66;
-            int registro = 128;
+
             while (salto < archivo.length()) {
                 archivo.seek(salto);
                 String correoArchivo = archivo.readUTF();
                 String contraseñaArchivo = archivo.readUTF();
-                if (correo.equals(correoArchivo.trim()) && contraseña.equals(contraseñaArchivo.trim())) {
-                    return true;
+                if (correo.equals(correoArchivo.trim()) && 
+                        contraseña.equals(contraseñaArchivo.trim())) {
+                    archivo.seek(salto - 66);
+                    return new Usuario(archivo.readUTF().trim(), archivo.readUTF().trim(), archivo.readUTF().trim(), archivo.readUTF().trim(), archivo.readUTF().trim());
                 }
-                salto += registro;
+                salto += tamañoRegistro;
             }
 
         } catch (IOException ex) {
             System.out.println("error login");
         }
-        return false;
+        return null;
 
     }
+
+
+    
+    @Override
+    public Usuario readCorreo(String correo) {
+        int salto = 66;
+        try {
+            while (salto < archivo.length()) {
+                archivo.seek(salto);
+
+                String correoArchivo = archivo.readUTF();
+                String contraseñaArchivo = archivo.readUTF();
+
+                System.out.println(correoArchivo);
+                System.out.println(contraseñaArchivo);
+
+                System.out.println(correo);
+
+                if (correo.equals(correoArchivo.trim())) {
+
+                    archivo.seek(salto - 66);
+                    usuario = new Usuario(archivo.readUTF().trim(), archivo.readUTF().trim(),
+                            archivo.readUTF().trim(), correoArchivo, contraseñaArchivo);
+                    return usuario;
+                }
+                salto += tamañoRegistro;
+            }
+        } catch (IOException ex) {
+            System.out.println("Error read Correo");
+        }
+        return null;
+    }
+
 }

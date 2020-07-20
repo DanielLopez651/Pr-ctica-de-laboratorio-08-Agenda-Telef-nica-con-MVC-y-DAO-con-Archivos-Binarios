@@ -22,9 +22,14 @@ public interface ITelefonoDAO {
 
     public void update(Telefono telefono);
 
-    public void delete(Telefono telefono);
+    public void delete(int codigo);
 
     public List<Telefono> findAll();
+
     public int obtenerUltimoCodigo();
-    
+
+    public List<Telefono> telefonosUsuario(String id);
+
+    public int codigoTelefono();
+
 }

@@ -26,6 +26,8 @@ public class Usuario {
         telefonos = new ArrayList<>();
     }
 
+
+    
     public Usuario(String cedula, String nombre, String apellido, String correo, String contraseña) {
         this.setCedula(cedula);
         this.setNombre(nombre);
@@ -83,7 +85,7 @@ public class Usuario {
         if(cadena.length()==lon){
             return cadena;
         }else{
-            if(cadena.length()<10){
+            if(cadena.length()<lon){
                 return llenarEspacios(cadena,lon);
             }else{
                 return cortarEspacios(cadena,lon);

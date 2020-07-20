@@ -6,10 +6,8 @@
 package ups.edu.ec.controlador;
 
 import java.util.List;
-import ups.edu.ec.idao.ITelefonoDAO;
-
+import ups.edu.ec.dao.TelefonoDAO;
 import ups.edu.ec.modelo.Telefono;
-import ups.edu.ec.modelo.Usuario;
 
 /**
  *
@@ -20,36 +18,40 @@ public class ControladorTelefono {
 
     //Objeto Telefono
     private Telefono telefono;
-    private Usuario usuario;
+
     //Objetos DAO
+    private TelefonoDAO telefonosDAO;
 
-    private ITelefonoDAO telefonosDAO;
-
-    //Constructor vacio
     public ControladorTelefono() {
 
     }
 
     //Constructor 
-    public ControladorTelefono(ITelefonoDAO telefonosDAO) {
-
+    public ControladorTelefono(TelefonoDAO telefonosDAO) {
         this.telefonosDAO = telefonosDAO;
     }
 
     public void registrarTelefono(Telefono telefono) {
-        this.telefono = telefono;
         telefonosDAO.create(telefono);
     }
-    public int obtenerSiguienteCodigo(){
-        int codigo=telefonosDAO.obtenerUltimoCodigo();
+
+    public int obtenerSiguienteCodigo() {
+        int codigo = telefonosDAO.obtenerUltimoCodigo();
         return ++codigo;
     }
-    public List<Telefono> verTelefonos() {
-        List<Telefono> telefonos;
-        telefonos = telefonosDAO.findAll();
-        return telefonos;
-       
+
+//    public List<Telefono> verTelefonos() {
+//        List<Telefono> telefonos;
+//        telefonos = telefonosDAO.findAll();
+//        return telefonos;
+//
+//    }
+
+    public Telefono encontrarTelefono(int codigo) {
+
+        telefono = telefonosDAO.read(codigo);
+
+        return telefono;
     }
-   
 
 }
