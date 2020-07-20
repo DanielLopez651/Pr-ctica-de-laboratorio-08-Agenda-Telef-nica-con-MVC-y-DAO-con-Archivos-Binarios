@@ -8,8 +8,6 @@ package ups.edu.ec.dao;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-
-
 import ups.edu.ec.idao.IUsuarioDAO;
 import ups.edu.ec.modelo.Usuario;
 
@@ -30,11 +28,12 @@ public class UsuarioDAO implements IUsuarioDAO {
     private RandomAccessFile archivo;
     private int tamañoRegistro;
     private Usuario usuario;
+
     public UsuarioDAO() {
-        tamañoRegistro=128;
+        tamañoRegistro = 128;
         try {
             archivo = new RandomAccessFile("datos/usuario.dat", "rw");
-            tamañoRegistro=128;
+            tamañoRegistro = 128;
         } catch (IOException ex) {
             System.out.println("error de lectura y escritura");
             ex.printStackTrace();
@@ -58,7 +57,7 @@ public class UsuarioDAO implements IUsuarioDAO {
     @Override
     public Usuario read(String cedula) {
         int salto = 0;
-      
+
         try {
             while (salto < archivo.length()) {
                 archivo.seek(salto);
@@ -72,7 +71,7 @@ public class UsuarioDAO implements IUsuarioDAO {
                 salto += tamañoRegistro;
             }
         } catch (IOException ex) {
-            System.out.println("Error de lectura o escritura(readUsuario)");
+            System.out.println("Error de lectura o escritura en read");
         }
         return null;
     }
@@ -97,13 +96,13 @@ public class UsuarioDAO implements IUsuarioDAO {
                 salto += registro;
             }
         } catch (IOException ex) {
-            System.out.println("Error de lectura o escritura(upDateUsuario)");
+            System.out.println("Error de lectura o escritura en updateUsuario");
         }
     }
 
     @Override
     public void delete(Usuario usuario) {
-         
+
         try {
             String cedula = usuario.getCedula();
             int salto = 0;
@@ -133,15 +132,15 @@ public class UsuarioDAO implements IUsuarioDAO {
 
     @Override
     public Usuario login(String correo, String contraseña) {
-            try {
+        try {
             int salto = 66;
 
             while (salto < archivo.length()) {
                 archivo.seek(salto);
                 String correoArchivo = archivo.readUTF();
                 String contraseñaArchivo = archivo.readUTF();
-                if (correo.equals(correoArchivo.trim()) && 
-                        contraseña.equals(contraseñaArchivo.trim())) {
+                if (correo.equals(correoArchivo.trim())
+                        && contraseña.equals(contraseñaArchivo.trim())) {
                     archivo.seek(salto - 66);
                     return new Usuario(archivo.readUTF().trim(), archivo.readUTF().trim(), archivo.readUTF().trim(), archivo.readUTF().trim(), archivo.readUTF().trim());
                 }
@@ -155,10 +154,8 @@ public class UsuarioDAO implements IUsuarioDAO {
 
     }
 
-
-    
     @Override
-    public Usuario readCorreo(String correo) {
+    public Usuario LeerCorreo(String correo) {
         int salto = 66;
         try {
             while (salto < archivo.length()) {
@@ -166,11 +163,6 @@ public class UsuarioDAO implements IUsuarioDAO {
 
                 String correoArchivo = archivo.readUTF();
                 String contraseñaArchivo = archivo.readUTF();
-
-                System.out.println(correoArchivo);
-                System.out.println(contraseñaArchivo);
-
-                System.out.println(correo);
 
                 if (correo.equals(correoArchivo.trim())) {
 
@@ -182,7 +174,7 @@ public class UsuarioDAO implements IUsuarioDAO {
                 salto += tamañoRegistro;
             }
         } catch (IOException ex) {
-            System.out.println("Error read Correo");
+            System.out.println("Error en leer el correo(buscarU)");
         }
         return null;
     }
